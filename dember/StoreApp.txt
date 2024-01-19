@@ -1,0 +1,113 @@
+import java.util.Scanner;
+
+/**
+ * Represents the main application for managing a store.
+ */
+public class StoreApp {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Create an instance of Store
+        Store store = new Store();
+
+        // Add some products to the store (taking user input)
+        addProductsToStore(store, scanner);
+
+        // Display initial store inventory
+        store.displayInventory();
+
+        // Create an instance of Customer (taking user input)
+        Customer customer1 = createCustomer(scanner);
+
+        // Customers add products to their carts (taking user input)
+        addToCart(customer1, store, scanner);
+
+        // Display updated store inventory
+        store.displayInventory();
+
+        // Customers proceed to checkout
+        customer1.checkout();
+
+        // Display final store inventory
+        store.displayInventory();
+
+        scanner.close();
+    }
+
+    /**
+     * Allows the user to input product details and add them to the store's inventory.
+     *
+     * @param store   The store to add products to.
+     * @param scanner The scanner for user input.
+     */
+    private static void addProductsToStore(Store store, Scanner scanner) {
+        System.out.println("Adding products to the store:");
+        char addMore;
+        do {
+            try {
+                System.out.print("Enter product ID: ");
+                int productId = Integer.parseInt(scanner.nextLine().trim());
+
+                System.out.print("Enter product name: ");
+                String productName = scanner.nextLine().trim();
+
+                System.out.print("Enter price: $");
+                double price = Double.parseDouble(scanner.nextLine().trim());
+
+                System.out.print("Enter quantity: ");
+                int quantity = Integer.parseInt(scanner.nextLine().trim());
+
+                store.addProduct(new Product(productId, productName, price, quantity));
+
+                System.out.print("Do you want to add more products? (y/n): ");
+                addMore = scanner.nextLine().charAt(0);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter valid numeric values and try again.");
+                addMore = 'y'; // Continue the loop to allow the user to enter valid input
+            }
+        } while (addMore == 'y' || addMore == 'Y');
+    }
+
+    /**
+     * Allows the user to add products to a customer's cart.
+     *
+     * @param customer The customer to add products to the cart.
+     * @param store    The store to sell products from.
+     * @param scanner  The scanner for user input.
+     */
+    private static void addToCart(Customer customer, Store store, Scanner scanner) {
+        System.out.println("Customer " + customer.getCustomerId() + " - " + customer.getName() + "'s cart:");
+        char addToCartMore;
+        do {
+            System.out.print("Enter product ID to add to the cart: ");
+            int productId = scanner.nextInt();
+            System.out.print("Enter quantity: ");
+            int quantity = scanner.nextInt();
+
+            Product product = store.sellProduct(productId, quantity);
+            customer.addToCart(product, quantity);
+
+            System.out.print("Do you want to add more products to the cart? (y/n): ");
+            addToCartMore = scanner.next().charAt(0);
+        } while (addToCartMore == 'y' || addToCartMore == 'Y');
+    }
+
+    /**
+     * Creates a new customer based on user input.
+     *
+     * @param scanner The scanner for user input.
+     * @return A new Customer object.
+     */
+    private static Customer createCustomer(Scanner scanner) {
+        System.out.println("Enter customer information:");
+
+        System.out.print("Enter customer ID: ");
+        int customerId = scanner.nextInt();
+        scanner.nextLine(); // Consume newline
+
+        System.out.print("Enter customer name: ");
+        String customerName = scanner.nextLine();
+
+        return new Customer(customerId, customerName);
+    }
+}

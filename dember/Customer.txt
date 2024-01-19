@@ -1,0 +1,76 @@
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Represents a customer in the store.
+ */
+class Customer {
+    private int customerId;
+    private String name;
+    private List<Product> cart;
+
+    /**
+     * Constructs a new Customer object with the given ID and name.
+     *
+     * @param customerId The unique identifier for the customer.
+     * @param name       The name of the customer.
+     */
+    public Customer(int customerId, String name) {
+        this.customerId = customerId;
+        this.name = name;
+        this.cart = new ArrayList<>();
+    }
+
+    /**
+     * Gets the ID of the customer.
+     *
+     * @return The customer ID.
+     */
+    public int getCustomerId() {
+        return customerId;
+    }
+
+    /**
+     * Gets the name of the customer.
+     *
+     * @return The customer name.
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Adds a product to the customer's shopping cart.
+     *
+     * @param product  The product to be added to the cart.
+     * @param quantity The quantity of the product to be added.
+     */
+    public void addToCart(Product product, int quantity) {
+        if (product != null) {
+            Product clonedProduct = new Product(product.getProductId(), product.getProductName(), product.getPrice(), quantity);
+            cart.add(clonedProduct);
+            System.out.println(quantity + " " + clonedProduct.getProductName() + "(s) added to the cart.");
+        } else {
+            System.out.println("Product is null.");
+        }
+    }
+
+    /**
+     * Calculates and displays the total cost of items in the customer's shopping cart.
+     *
+     * @return The total cost of items in the cart.
+     */
+    public double checkout() {
+        double totalCost = 0.0;
+        System.out.println("Shopping Cart for Customer " + customerId + " - " + name);
+        for (Product product : cart) {
+            double itemCost = product.calculateTotalPrice(product.getQuantityOnHand());
+            System.out.println("Product: " + product.getProductName() +
+                    ", Price: $" + product.getPrice() +
+                    ", Quantity: " + product.getQuantityOnHand() + ", Total Cost: $" + itemCost);
+            totalCost += itemCost;
+        }
+        System.out.println("Total Cost: $" + totalCost);
+        return totalCost;
+    }
+}

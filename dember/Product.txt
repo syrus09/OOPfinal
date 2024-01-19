@@ -1,0 +1,84 @@
+/**
+ * Represents a product in the store.
+ */
+class Product {
+    private int productId;
+    private String productName;
+    private double price;
+    private int quantityOnHand;
+
+    /**
+     * Constructs a new Product object with the given ID, name, price, and initial quantity on hand.
+     *
+     * @param productId      The unique identifier for the product.
+     * @param productName    The name of the product.
+     * @param price          The price of the product.
+     * @param quantityOnHand The initial quantity of the product in stock.
+     */
+    public Product(int productId, String productName, double price, int quantityOnHand) {
+        this.productId = productId;
+        this.productName = productName;
+        this.price = price;
+        this.quantityOnHand = quantityOnHand;
+    }
+
+    /**
+     * Gets the ID of the product.
+     *
+     * @return The product ID.
+     */
+    public int getProductId() {
+        return productId;
+    }
+
+    /**
+     * Gets the name of the product.
+     *
+     * @return The product name.
+     */
+    public String getProductName() {
+        return productName;
+    }
+
+    /**
+     * Gets the price of the product.
+     *
+     * @return The product price.
+     */
+    public double getPrice() {
+        return price;
+    }
+
+    /**
+     * Gets the current quantity of the product in stock.
+     *
+     * @return The quantity of the product on hand.
+     */
+    public int getQuantityOnHand() {
+        return quantityOnHand;
+    }
+
+    /**
+     * Calculates the total price for a specified quantity of the product.
+     *
+     * @param quantity The quantity of the product.
+     * @return The total price for the specified quantity.
+     */
+    public double calculateTotalPrice(int quantity) {
+        return price * quantity;
+    }
+
+    /**
+     * Updates the quantity on hand after a sale and prints a confirmation message.
+     *
+     * @param quantity The quantity sold.
+     */
+    public void sell(int quantity) {
+        if (quantity > quantityOnHand) {
+            System.out.println("Not enough stock available for " + productName);
+        } else {
+            quantityOnHand -= quantity;
+            System.out.println("Sold " + quantity + " " + productName + "(s)");
+        }
+    }
+}

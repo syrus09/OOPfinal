@@ -1,0 +1,62 @@
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Represents a store that manages a list of products.
+ */
+class Store {
+    private List<Product> products;
+
+    /**
+     * Constructs a new Store object with an empty list of products.
+     */
+    public Store() {
+        this.products = new ArrayList<>();
+    }
+
+    /**
+     * Adds a product to the store's inventory.
+     *
+     * @param product The product to be added to the inventory.
+     */
+    public void addProduct(Product product) {
+        products.add(product);
+    }
+
+    /**
+     * Displays the current inventory of the store.
+     */
+    public void displayInventory() {
+        System.out.println("Store Inventory:");
+        for (Product product : products) {
+            System.out.println("Product ID: " + product.getProductId() +
+                    ", Name: " + product.getProductName() +
+                    ", Price: $" + product.getPrice() +
+                    ", Quantity: " + product.getQuantityOnHand());
+        }
+        System.out.println();
+    }
+
+    /**
+     * Attempts to sell a specified quantity of a product.
+     *
+     * @param productId The ID of the product to be sold.
+     * @param quantity  The quantity of the product to be sold.
+     * @return The sold product if successful, or null otherwise.
+     */
+    public Product sellProduct(int productId, int quantity) {
+        for (Product product : products) {
+            if (product.getProductId() == productId) {
+                if (product.getQuantityOnHand() >= quantity) {
+                    product.sell(quantity);
+                    return product; // Product sold successfully
+                } else {
+                    System.out.println("Not enough stock available for " + product.getProductName());
+                    return null; // Product not sold due to insufficient stock
+                }
+            }
+        }
+        System.out.println("Product with ID " + productId + " not found.");
+        return null; // Product not found
+    }
+}
